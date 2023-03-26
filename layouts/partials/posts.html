@@ -1,0 +1,29 @@
+{{ .Title }}
+
+{{- .Content -}}
+
+<h3>Sections</h3>
+
+{{ range site.Sections }}
+    <li>
+        <a href="{{ .Permalink }}">
+            {{- .Section -}}
+            <small><time>{{ .FuzzyWordCount }}</time></small>
+        </a>
+    </li>
+{{ end }}
+
+<h3>Pages</h3>
+<ul>
+{{ range where .Pages ".File.BaseFileName" "!=" "index" }}
+    <li>
+        <a href="{{ .Permalink }}">
+          {{ with .Title }}
+          {{ . }}
+          {{ else }}
+          {{ .File.BaseFileName }}
+          {{ end }}
+        </a>
+    </li>
+{{ end }}
+</ul>

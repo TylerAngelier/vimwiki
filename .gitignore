@@ -1,0 +1,10 @@
+_site/
+site_html/
+Gemfile.lock
+templates/
+.sass-cache/
+diary
+public
+private
+Private.md
+
