@@ -4,3 +4,4 @@
 
 - [OCI](oci)
 - [Interview](interview)
+- [Bash and Shell Scripting](Bash and Shell Scripting.md)
