@@ -1,24 +1,34 @@
 name: 🚀 Publish Github Pages
 
-on: push
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
-      - name: Git checkout
-        uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
+        with:
+          submodules: false  # Fetch Hugo themes (true OR recursive)
+          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
       - name: Setup hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: 'latest'
+          hugo-version: '0.110.0'
 
       - name: Build
-        run: hugo --config config-gh.toml
+        run: hugo --config config-gh.toml --minify
 
       - name: 🚀 Deploy to GitHub pages
         uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
         with:
           deploy_key: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
