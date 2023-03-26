@@ -8,9 +8,7 @@ on:
 
 jobs:
   deploy:
-    runs-on:
-      - self-hosted
-      - homelab-kubernetes-tyler
+    runs-on: ubuntu-latest
     permissions:
       contents: write
     concurrency:
@@ -32,7 +30,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          deploy_key: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./public
           force_orphan: true
