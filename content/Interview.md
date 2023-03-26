@@ -151,37 +151,21 @@ JSM app, messages would go in queues for processing. Used JBOSS, would go to jou
 
 > What is DNS? How does it work?
 
-Root DNS, used to be...certain companies had those, hosted. Replicated to other DNS servers. Might have DNS servers, root DNS. Get copies. Tiered thing, have it cached locally, if it doesn't, it queries up.
-
 > Some issues?
-
-Names not there, service goes down, replication not working. Important thing... Google had an issue, DNS, they were some root servers. 
 
 > Issues with caching?
 
-Can change it, different server, local one on an old server, query that one...flush dns...might have a cache on your local system.
-
 > Why implemented the way it is? Why not updated all the time?
-
-Too much information, if you have a lot of DNS locally... Cache for perf, and resources, main reason. TTL...goes out every so often. Mainly for resources and perf.
 
 > CAP theorem?
 
 > Describe what a CDN is and how it works
 
-- Difference between a process and thread?
-
-Process is a process, thread different things, threads in a process, threads on a hardware level, multi-threading CPU. Older systems...single thread...everything goes through the thread. Newer systems have multiple threads. Normally...people think thread is a smaller unit.
-
 > How is memory shared?
 
 > Processes?
 
-Access to memory, passed along from one to another... Not sure...separate process...different method. Yes there is...might be hardware, system, OS might have shared memory. Might have memory for that process. Can tell your code, put it into shared memory.
-
 - Diff heap/stack
-
-Heap is...usually a java term, heap memory, java...grab...memory of the system, use it as it's heap. Inside that, allocate it out for certain functions... Haven't dug in to java, tune those parameters. Not sure what's going on there.
 
 - What are the pros / cons for method/block synchronization?
 
@@ -189,39 +173,21 @@ Heap is...usually a java term, heap memory, java...grab...memory of the system, 
 
 - What is deadlock?
 
-Inside a database...one...way I look at it...there's a...sql statement...locking the table, to insert the data. Another statement, tries to lock, deadlocked, being locked.
-
 - What is a race condition?
 
 - How is a linked list different than an array?
 
 > IaC
 
-Terraform, define stuff you want. Define state file, go through and create that infra. Keep it as a certain state. Make a change to the file, your terraform code, differences.
-
 > Terraform, CFM
-
-CFM is more yaml, CFM is aws' version, terraform is hashicorp.
 
 > How cross cloud is tf?
 
-Seemed to be fine... Just define things, choose a different provider?
-
 > Different resources?
-
-Yeah...they do... different syntax? You just go along...GCP calls compute, what you're 
-
-##
-
-Being admin...instrumentation, logging
-
-> Logs look normal
 
 ## Programming
 
 - Difference between a stack and a queue?
-
-Stack, filo
 
 - When might you use a stack?
 
@@ -253,33 +219,19 @@ Stack, filo
 
 Describe a time you...
 
-    - Made a commitment to something, like getting a feature or sprint work done, and realized part way through you wouldn't be able to.
+- Made a commitment to something, like getting a feature or sprint work done, and realized part way through you wouldn't be able to.
 
 > What was it you had committed too and how did you handle the situation?
 
-First starts, avalara, dealing with env, asked to write some tf to...vcp peering, started writing...committed...totally new, didn't educate me on process, write the peering, sent review. Reviewer...created the env, got all mad, what are you doing? I'm like...what... And this takes a couple days... What's he tlaking about - he was "the gatekeeper". Came to find out...process for that...they have modules pre-written. Have to implement these modules. Start searching, find peering, submit, shoots back wrong one. Had to go through his structure, no docs, certain loc, branch it off. This took a long time.
-
-Took a long time... Hoping to hit a deadline, took...almost two weeks...
-
 > Communicate out the timeline? What was going on?
 
-Communicated with manager, what's going on, just deal with it. I don't think he cared, just wanted me to figure it out.
-
-Don't think this was the best style... had to work with that guy.
-
 > Hard deadline, trying again...
-
-Tyco, fix stuff...example...filter out messages, always a hard deadline. Customer...interface directly with the customer. They wanted it, as soon as possible.
-
-I found out I wouldn't make the deadline if I kept looking. Had to end it. I was in a lead position, just let me do my thing.
-
-* Red flag on communication...doesn't seem to communicate up
 
 ## Bias for Action
 
 Describe a time you...
 
-    - Went outside of your job role to fix something, build something, or improve something?
+- Went outside of your job role to fix something, build something, or improve something?
 
 What was it you did and why did you do it?
 
@@ -319,13 +271,11 @@ public class WhiteboardQuestions {
 
 ```
 
-
-# Austin Interview
+# Being a watcher of an Interview
 
 - Talked about himself first. 
 - Asked interviewee to talk about themselves. 
 - Most fun bit of code you ever have written.
-	- Talked about whether or not you "are a developer" vs SRE based on your README.
 - Asks a lot of follow-up questions based on the interviewe response
 - Switches to "General Technical questions"
 	- What is DNS?

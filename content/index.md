@@ -2,6 +2,9 @@
 
 [Tyler Angelier's](https://github.com/TylerAngelier) notes. Built using [vimwiki](https://github.com/vimwiki).
 
+- [Work](Work.md)
+
 - [OCI](oci)
 - [Interview](interview)
 - [Bash and Shell Scripting](Bash and Shell Scripting.md)
+- [Kubernetes](Kubernetes.md)
