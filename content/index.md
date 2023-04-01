@@ -7,4 +7,5 @@
 - [OCI](oci)
 - [Interview](interview)
 - [Bash and Shell Scripting](Bash and Shell Scripting.md)
+- [SSH](SSH.md)
 - [Kubernetes](Kubernetes.md)
