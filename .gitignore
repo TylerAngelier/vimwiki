@@ -6,7 +6,10 @@ templates/
 diary
 public
 private
+# Ignore These Files
 Private.md
 work
 content/Work.md
+content/Interview.md
+content/Austin Interview.md
 

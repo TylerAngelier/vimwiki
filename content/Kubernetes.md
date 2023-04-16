@@ -3,8 +3,8 @@
 Runs an Oralce Linux 7 Slim image from dockerhub and destroys it when you detach. Also adds an overide to not inject the Istio sidecar container. 
 
 ```bash
-kubectl run -i --tty --rm ol7-debug-$USER --image=oraclelinux:7-slim --restart=Never \
-  --overrides='{ "apiVersion": "v1", "metadata": {"annotations": { "sidecar.istio.io/inject":"false" } } }' \
+kubectl run -i --tty --rm ol8-debug-$USER --image=oraclelinux:8 --restart=Never \
+  --annotations='sidecar.istio.io/inject=false' --annotations='traffic.sidecar.istio.io/excludeOutboundIPRanges=10.96.0.1/32' \
   -- bash
 ```
 
