@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://notes.trangelier.dev/favicon.ico><link rel=stylesheet href=/css/style.min.css><title></title></head><body><header id=banner><p class=title><a href=https://notes.trangelier.dev/>Vimwiki</a></p><nav><ul></ul></nav></header><main id=content><article><header id=post-header><h1></h1></header><h1 id=oci>OCI</h1><p><a href=https://www.oracle.com/cloud/>Oracle Cloud Infrastructure</a></p><h1 id=ocir---container-registry>OCIR - Container Registry</h1><h2 id=login>Login</h2><p>Login to a specific region:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Format is &lt;region-key&gt;.ocir.io</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Phoenix</span>
+</span></span><span style=display:flex><span>docker login phx.ocir.io
+</span></span><span style=display:flex><span><span style=color:#75715e># Ashburn</span>
+</span></span><span style=display:flex><span>docker login iad.ocir.io
+</span></span><span style=display:flex><span><span style=color:#75715e># Langley</span>
+</span></span><span style=display:flex><span>docker login ocir.us-langley-1.oci
+</span></span><span style=display:flex><span><span style=color:#75715e># Luke</span>
+</span></span><span style=display:flex><span>docker login ocir.us-luke-1.oci
+</span></span></code></pre></div><ul><li>Username will be in a format like <code>&lt;tenancy-namespace>/&lt;username></code>.<ul><li><strong>Note</strong>: Username can be a bit &ldquo;odd&rdquo; as if it is a Oracle Identity Cloud Service account, such as through IDCS, then we will supply a value like <code>oracleidentitycloudservice/&lt;username></code>.</li></ul></li><li>Password will be an OCI <a href=https://docs.oracle.com/en-us/iaas/Content/Registry/Tasks/registrygettingauthtoken.htm>auth token</a>.</li></ul><p><a href=https://docs.oracle.com/en-us/iaas/Content/Functions/Tasks/functionslogintoocir.htm>Official Documentation</a></p><h2 id=push-an-image>Push an Image</h2><p>Build your image</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>docker build -t foobar .
+</span></span></code></pre></div><p>Tag the image</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>docker tag foobar phx.ocir.io/axkxa1g0qepm/foobar:latest
+</span></span></code></pre></div><p>Push the image</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>docker push phx.ocir.io/axkxa1g0qepm/foobar:latest
+</span></span></code></pre></div><p>Or in a bit more of a script-able way&mldr;</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>export oci_registry<span style=color:#f92672>=</span>phx.ocir.io
+</span></span><span style=display:flex><span>export oci_namespace<span style=color:#f92672>=</span>axkxa1g0qepm
+</span></span><span style=display:flex><span>export image_name<span style=color:#f92672>=</span>foobar
+</span></span><span style=display:flex><span>export image_tag<span style=color:#f92672>=</span>latest
+</span></span><span style=display:flex><span>export oci_tag<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>image_tag:=latest<span style=color:#e6db74>}</span>
+</span></span><span style=display:flex><span>export oci_image_path<span style=color:#f92672>=</span>$oci_registry/$oci_namespace/$image_name:$oci_tag
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>docker login $oci_registry
+</span></span><span style=display:flex><span>docker build -t $image_name:$image_tag .
+</span></span><span style=display:flex><span>docker tag $image_name:$image_tag $oci_image_path
+</span></span><span style=display:flex><span>docker push $oci_image_path
+</span></span></code></pre></div></article></main><footer id=footer></footer></body></html>

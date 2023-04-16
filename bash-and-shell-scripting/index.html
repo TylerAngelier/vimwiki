@@ -1,0 +1,145 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://notes.trangelier.dev/favicon.ico><link rel=stylesheet href=/css/style.min.css><title></title></head><body><header id=banner><p class=title><a href=https://notes.trangelier.dev/>Vimwiki</a></p><nav><ul></ul></nav></header><main id=content><article><header id=post-header><h1></h1></header><h1 id=bash-and-shell-scripting>Bash and Shell Scripting</h1><p>This article is everything about writing bash and shell scripts.</p><h1 id=shell-script-things>Shell script things</h1><h2 id=parse-long-and-short-args>Parse long and short args</h2><p><a href=https://stackoverflow.com/a/30026641/8156025>https://stackoverflow.com/a/30026641/8156025</a></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Transform long options to short ones  </span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> arg in <span style=color:#e6db74>&#34;</span>$@<span style=color:#e6db74>&#34;</span>; <span style=color:#66d9ef>do</span>  
+</span></span><span style=display:flex><span>  shift  
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>case</span> <span style=color:#e6db74>&#34;</span>$arg<span style=color:#e6db74>&#34;</span> in  
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>&#34;--help&#34;</span><span style=color:#f92672>)</span> set -- <span style=color:#e6db74>&#34;</span>$@<span style=color:#e6db74>&#34;</span> <span style=color:#e6db74>&#34;-h&#34;</span> ;;  
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>&#34;--verbose&#34;</span><span style=color:#f92672>)</span> set -- <span style=color:#e6db74>&#34;</span>$@<span style=color:#e6db74>&#34;</span> <span style=color:#e6db74>&#34;-v&#34;</span> ;;  
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>&#34;--region&#34;</span><span style=color:#f92672>)</span> set -- <span style=color:#e6db74>&#34;</span>$@<span style=color:#e6db74>&#34;</span> <span style=color:#e6db74>&#34;-r&#34;</span> ;;  
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>&#34;--zone&#34;</span><span style=color:#f92672>)</span> set -- <span style=color:#e6db74>&#34;</span>$@<span style=color:#e6db74>&#34;</span> <span style=color:#e6db74>&#34;-z&#34;</span> ;;  
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>&#34;--environmentClass&#34;</span><span style=color:#f92672>)</span> set -- <span style=color:#e6db74>&#34;</span>$@<span style=color:#e6db74>&#34;</span> <span style=color:#e6db74>&#34;-e&#34;</span> ;;  
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>&#34;--instance&#34;</span><span style=color:#f92672>)</span> set -- <span style=color:#e6db74>&#34;</span>$@<span style=color:#e6db74>&#34;</span> <span style=color:#e6db74>&#34;-i&#34;</span> ;;  
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>&#34;--subscriber&#34;</span><span style=color:#f92672>)</span> set -- <span style=color:#e6db74>&#34;</span>$@<span style=color:#e6db74>&#34;</span> <span style=color:#e6db74>&#34;-s&#34;</span> ;;  
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>&#34;--system&#34;</span><span style=color:#f92672>)</span> set -- <span style=color:#e6db74>&#34;</span>$@<span style=color:#e6db74>&#34;</span> <span style=color:#e6db74>&#34;-y&#34;</span> ;;  
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>&#34;--alias&#34;</span><span style=color:#f92672>)</span> set -- <span style=color:#e6db74>&#34;</span>$@<span style=color:#e6db74>&#34;</span> <span style=color:#e6db74>&#34;-a&#34;</span> ;;  
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>&#34;--port&#34;</span><span style=color:#f92672>)</span> set -- <span style=color:#e6db74>&#34;</span>$@<span style=color:#e6db74>&#34;</span> <span style=color:#e6db74>&#34;-p&#34;</span> ;;  
+</span></span><span style=display:flex><span>  *<span style=color:#f92672>)</span> set -- <span style=color:#e6db74>&#34;</span>$@<span style=color:#e6db74>&#34;</span> <span style=color:#e6db74>&#34;</span>$arg<span style=color:#e6db74>&#34;</span> ;;  
+</span></span><span style=display:flex><span>  esacdone  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>local OPTIND<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>  
+</span></span><span style=display:flex><span><span style=color:#75715e># Resetting OPTIND is necessary if getopts was used previously in the script.  </span>
+</span></span><span style=display:flex><span><span style=color:#75715e># It is a good idea to make OPTIND local if you process options in a function.  </span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span><span style=color:#66d9ef>while</span> getopts h?vf:z:e:i:s:y:a:r:p: opt; <span style=color:#66d9ef>do</span>  
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>case</span> <span style=color:#e6db74>&#34;</span>$opt<span style=color:#e6db74>&#34;</span> in  
+</span></span><span style=display:flex><span>  h | <span style=color:#ae81ff>\?</span><span style=color:#f92672>)</span>  
+</span></span><span style=display:flex><span>    show_help  
+</span></span><span style=display:flex><span>    exit <span style=color:#ae81ff>0</span>  
+</span></span><span style=display:flex><span>    ;;  
+</span></span><span style=display:flex><span>  f<span style=color:#f92672>)</span>  
+</span></span><span style=display:flex><span>    output_format<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>OPTARG<span style=color:#e6db74>}</span>  
+</span></span><span style=display:flex><span>    ;;  
+</span></span><span style=display:flex><span>  v<span style=color:#f92672>)</span>  
+</span></span><span style=display:flex><span>    verbose<span style=color:#f92672>=</span><span style=color:#66d9ef>$((</span>verbose <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span><span style=color:#66d9ef>))</span>  
+</span></span><span style=display:flex><span>    ;;  
+</span></span><span style=display:flex><span>  p<span style=color:#f92672>)</span>  
+</span></span><span style=display:flex><span>     port<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>OPTARG<span style=color:#e6db74>}</span>  
+</span></span><span style=display:flex><span>     ;;  
+</span></span><span style=display:flex><span>  a<span style=color:#f92672>)</span>  
+</span></span><span style=display:flex><span>    alias<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>OPTARG<span style=color:#e6db74>}</span>  
+</span></span><span style=display:flex><span>    ;;  
+</span></span><span style=display:flex><span>  r<span style=color:#f92672>)</span>  
+</span></span><span style=display:flex><span>    region<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>OPTARG<span style=color:#e6db74>}</span>  
+</span></span><span style=display:flex><span>    ;;  
+</span></span><span style=display:flex><span>  z<span style=color:#f92672>)</span>  
+</span></span><span style=display:flex><span>    zone<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>OPTARG<span style=color:#e6db74>}</span>  
+</span></span><span style=display:flex><span>    ;;  
+</span></span><span style=display:flex><span>  e<span style=color:#f92672>)</span>  
+</span></span><span style=display:flex><span>    environmentClass<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>OPTARG<span style=color:#e6db74>}</span>  
+</span></span><span style=display:flex><span>    ;;  
+</span></span><span style=display:flex><span>  i<span style=color:#f92672>)</span>  
+</span></span><span style=display:flex><span>    instance<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>OPTARG<span style=color:#e6db74>}</span>  
+</span></span><span style=display:flex><span>    ;;  
+</span></span><span style=display:flex><span>  s<span style=color:#f92672>)</span>  
+</span></span><span style=display:flex><span>    subscriber<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>OPTARG<span style=color:#e6db74>}</span>  
+</span></span><span style=display:flex><span>    ;;  
+</span></span><span style=display:flex><span>  y<span style=color:#f92672>)</span>  
+</span></span><span style=display:flex><span>    system<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>OPTARG<span style=color:#e6db74>}</span>  
+</span></span><span style=display:flex><span>    ;;  
+</span></span><span style=display:flex><span>  esacdone  
+</span></span><span style=display:flex><span>shift <span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$((</span>OPTIND <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span><span style=color:#66d9ef>))</span><span style=color:#e6db74>&#34;</span> <span style=color:#75715e># Discard the options and sentinel --  </span>
+</span></span><span style=display:flex><span><span style=color:#f92672>[</span> <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>1<span style=color:#66d9ef>:-</span><span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;--&#34;</span> <span style=color:#f92672>]</span> <span style=color:#f92672>&amp;&amp;</span> shift
+</span></span></code></pre></div><h2 id=get-exit-code-of-last-command>Get exit code of last command</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>echo $?
+</span></span></code></pre></div><h2 id=colors-and-emoji-commands>Colors and emoji commands</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Color and style stuff  </span>
+</span></span><span style=display:flex><span>emoji_check<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;\U2705&#39;</span>  
+</span></span><span style=display:flex><span>emoji_cross<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;\U274C&#39;</span>  
+</span></span><span style=display:flex><span>emoji_eyes<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;\U1F440&#39;</span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>success<span style=color:#f92672>(){</span>  
+</span></span><span style=display:flex><span>  echo -e <span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>tput setaf 2<span style=color:#66d9ef>)</span>$1<span style=color:#66d9ef>$(</span>tput sgr0<span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span>  
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>failure<span style=color:#f92672>(){</span>  
+</span></span><span style=display:flex><span>  echo -e <span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>tput setaf 1<span style=color:#66d9ef>)</span>$1<span style=color:#66d9ef>$(</span>tput sgr0<span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span>  
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>success-check<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>  
+</span></span><span style=display:flex><span>  success <span style=color:#e6db74>&#34;</span>$emoji_check<span style=color:#e6db74> </span>$1<span style=color:#e6db74>&#34;</span>  
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>failure-cross<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>  
+</span></span><span style=display:flex><span>  failure <span style=color:#e6db74>&#34;</span>$emoji_cross<span style=color:#e6db74> </span>$1<span style=color:#e6db74>&#34;</span>  
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>cyan<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>  
+</span></span><span style=display:flex><span>  echo -e <span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>tput setaf 6<span style=color:#66d9ef>)</span>$1<span style=color:#66d9ef>$(</span>tput sgr0<span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span>  
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>cyan-eyes<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>  
+</span></span><span style=display:flex><span>  cyan <span style=color:#e6db74>&#34;</span>$emoji_eyes<span style=color:#e6db74> </span>$1<span style=color:#e6db74>&#34;</span>  
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span></code></pre></div><p>#sh</p><h1 id=fzf>FZF</h1><h2 id=git-checkout-branches>git checkout branches</h2><p><a href=https://polothy.github.io/post/2019-08-19-fzf-git-checkout/>https://polothy.github.io/post/2019-08-19-fzf-git-checkout/</a></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Interactive git checkout using fzf</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># alias gch=&#34;git checkout $(git branch | fzf)&#34;</span>
+</span></span><span style=display:flex><span>fzf-git-branch<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    git rev-parse HEAD &gt; /dev/null 2&gt;&amp;<span style=color:#ae81ff>1</span> <span style=color:#f92672>||</span> <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    git branch --color<span style=color:#f92672>=</span>always --all --sort<span style=color:#f92672>=</span>-committerdate |
+</span></span><span style=display:flex><span>        grep -v HEAD |
+</span></span><span style=display:flex><span>        fzf --height 50% --ansi --no-multi --preview-window right:65% <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>            --preview <span style=color:#e6db74>&#39;git log -n 50 --color=always --date=short --pretty=&#34;format:%C(auto)%cd %h%d %s&#34; $(sed &#34;s/.* //&#34; &lt;&lt;&lt; {})&#39;</span> |
+</span></span><span style=display:flex><span>        sed <span style=color:#e6db74>&#34;s/.* //&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>fzf-git-checkout<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    git rev-parse HEAD &gt; /dev/null 2&gt;&amp;<span style=color:#ae81ff>1</span> <span style=color:#f92672>||</span> <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    local branch
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    branch<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>fzf-git-branch<span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#f92672>[[</span> <span style=color:#e6db74>&#34;</span>$branch<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;&#34;</span> <span style=color:#f92672>]]</span>; <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;No branch selected.&#34;</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>fi</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># If branch name starts with &#39;remotes/&#39; then it is a remote branch. By</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># using --track and a remote branch name, it is the same as:</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># git checkout -b branchName --track origin/branchName</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#f92672>[[</span> <span style=color:#e6db74>&#34;</span>$branch<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;remotes/&#39;</span>* <span style=color:#f92672>]]</span>; <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>        git checkout --track $branch
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span>
+</span></span><span style=display:flex><span>        git checkout $branch;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>fi</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>alias gb<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;fzf-git-branch&#39;</span>
+</span></span><span style=display:flex><span>alias gco<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;fzf-git-checkout&#39;</span>
+</span></span></code></pre></div><p>#git #fzf</p><h2 id=cool-prompt-with-dev-tooling>Cool prompt with dev tooling</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Prompt the user for an alias using fzf and a pretty preview window. The selected alias name will  </span>
+</span></span><span style=display:flex><span><span style=color:#75715e># be returned to stdout.  </span>
+</span></span><span style=display:flex><span>selectAlias<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>  
+</span></span><span style=display:flex><span>  get_keys <span style=color:#e6db74>&#34;cp.aliases&#34;</span> | fzf --height 30% --ansi --no-multi --preview-window right:55% <span style=color:#ae81ff>\ </span> 
+</span></span><span style=display:flex><span>    --preview <span style=color:#e6db74>&#39;cat &#39;</span><span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>user_config<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span><span style=color:#e6db74>&#39; | jq -r &#34;.cp.aliases.$(sed &#34;s/.* //&#34; &lt;&lt;&lt; {}) &#34;&#39;</span>  
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span></code></pre></div><h1 id=jq>jq</h1><p>JQ manual: <a href=https://stedolan.github.io/jq/manual/>https://stedolan.github.io/jq/manual/</a></p><h2 id=create-a-json-string>Create a JSON string</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>jq -n <span style=color:#ae81ff>\ </span> 
+</span></span><span style=display:flex><span>  --arg environmentClass <span style=color:#e6db74>&#34;</span>$environmentClass<span style=color:#e6db74>&#34;</span> <span style=color:#ae81ff>\ </span> 
+</span></span><span style=display:flex><span>  --arg instance <span style=color:#e6db74>&#34;</span>$instance<span style=color:#e6db74>&#34;</span> <span style=color:#ae81ff>\ </span> 
+</span></span><span style=display:flex><span>  --arg subscriber <span style=color:#e6db74>&#34;</span>$subscriber<span style=color:#e6db74>&#34;</span> <span style=color:#ae81ff>\ </span> 
+</span></span><span style=display:flex><span>  --arg system <span style=color:#e6db74>&#34;</span>$system<span style=color:#e6db74>&#34;</span> <span style=color:#ae81ff>\ </span> 
+</span></span><span style=display:flex><span>  --arg processChildren <span style=color:#e6db74>&#34;</span>$processChildrenFlag<span style=color:#e6db74>&#34;</span> <span style=color:#ae81ff>\ </span> 
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>&#39;{  
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>     environmentClass: $environmentClass,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>     instance: $instance,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>     subscriber: $subscriber,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>     resourceNameType: &#34;SYSTEM&#34;,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>     resourceNames: [ $system ],
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>     processChildren: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>   }&#39;</span>
+</span></span></code></pre></div><p>#jq</p><h2 id=filter-array-of-objects>Filter array of objects</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>echo <span style=color:#e6db74>&#39;[{&#34;name&#34;: &#34;foo&#34;},{&#34;name&#34;: &#34;bar&#34;}]&#39;</span> | jq <span style=color:#e6db74>&#39;.[] | select(.name==&#34;foo&#34;)&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># outputs {&#34;name&#34;:&#34;foo&#34;}</span>
+</span></span></code></pre></div><h2 id=get-raw-data>Get raw data</h2><p>The <code>-r</code> flag will trim off quotes.</p><h1 id=zsh>ZSH</h1><blockquote><p>Here is a non-exhaustive list, in execution-order, of what each file tends to contain:</p><ol><li><code>.zshenv</code> is <em>always</em> sourced. It often contains exported variables that should be available to other programs. For example, <code>$PATH</code>, <code>$EDITOR</code>, and <code>$PAGER</code> are often set in <code>.zshenv</code>. Also, you can set <code>$ZDOTDIR</code> in <code>.zshenv</code> to specify an alternative location for the rest of your zsh configuration.</li><li><code>.zprofile</code> is for login shells. It is basically the same as <code>.zlogin</code> except that it&rsquo;s sourced before <code>.zshrc</code> whereas <code>.zlogin</code> is sourced after <code>.zshrc</code>. According to the zsh documentation, <em>"<code>.zprofile</code> is meant as an alternative to <code>.zlogin</code> for ksh fans; the two are not intended to be used together, although this could certainly be done if desired."</em></li><li><code>.zshrc</code> is for interactive shells. You set options for the interactive shell there with the <code>setopt</code> and <code>unsetopt</code> commands. You can also load shell modules, set your history options, change your prompt, set up zle and completion, et cetera. You also set any variables that are only used in the interactive shell (e.g. <code>$LS_COLORS</code>).</li><li><code>.zlogin</code> is for login shells. It is sourced on the start of a login shell but after <code>.zshrc</code>, if the shell is also interactive. This file is often used to start X using <code>startx</code>. Some systems start X on boot, so this file is not always very useful.</li><li><code>.zlogout</code> is sometimes used to clear and reset the terminal. It is called when exiting, not when opening.</li></ol></blockquote><p>You should go through <a href="https://github.com/search?q=zsh+dotfiles&ref=commandbar">the configuration files of random Github users</a> to get a better idea of what each file should contain.</p><p>Stolen from: <a href=https://unix.stackexchange.com/a/71258>https://unix.stackexchange.com/a/71258</a></p></article></main><footer id=footer></footer></body></html>
